@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internship & Job Tracker App</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Supabase JS Library (Using UNPKG) -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+</head>
+<body class="bg-gray-100 text-gray-800 p-8">
+    <div class="max-w-3xl mx-auto">
+        <h1 class="text-3xl font-bold mb-6 text-center text-blue-600">Internship & Job Tracker</h1>
+
+        <!-- AUTHENTICATION SECTION -->
+        <div id="auth-section" class="bg-white p-6 rounded-lg shadow-md mb-6">
+            <h2 class="text-xl font-semibold mb-4">Login or Register</h2>
+            <input type="email" id="email" placeholder="Email" class="w-full p-2 border rounded mb-2">
+            <input type="password" id="password" placeholder="Password" class="w-full p-2 border rounded mb-4">
+            <div class="flex gap-2">
+                <button onclick="register()" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Register</button>
+                <button onclick="login()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Login</button>
+            </div>
+            <p id="auth-message" class="text-red-500 mt-2 text-sm"></p>
+        </div>
+
+        <!-- DASHBOARD SECTION -->
+        <div id="dashboard-section" class="hidden">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold">My Applications</h2>
+                <button onclick="logout()" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Logout</button>
+            </div>
+            <div id="app-container" class="bg-white p-6 rounded-lg shadow-md">
+                <p>Welcome! More features coming soon.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Link to our Logic -->
+    <script src="app.js"></script>
+</body>
+</html>
