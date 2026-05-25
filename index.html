@@ -3,94 +3,254 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Internship & Job Tracker App</title>
+    <title>InternTrack | The #1 Early Career Network</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .bg-grid { background-image: radial-gradient(#e5e7eb 1px, transparent 1px); background-size: 20px 20px; }
+    </style>
 </head>
-<body class="bg-gray-100 text-gray-800 p-8">
-    <div class="max-w-3xl mx-auto">
-        <h1 class="text-3xl font-bold mb-6 text-center text-blue-600">
-            Internship & Job Tracker
-        </h1>
+<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen overflow-x-hidden">
 
-        <!-- AUTHENTICATION SECTION -->
-        <div id="auth-section" class="bg-white p-6 rounded-lg shadow-md mb-6">
-            <h2 class="text-xl font-semibold mb-4">Login or Register</h2>
-
-            <input
-                type="email"
-                id="email"
-                placeholder="Email"
-                class="w-full p-2 border rounded mb-2"
-            >
-
-            <input
-                type="password"
-                id="password"
-                placeholder="Password"
-                class="w-full p-2 border rounded mb-4"
-            >
-
-            <div class="flex gap-2">
-                <button
-                    onclick="register()"
-                    class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-                >
-                    Register
-                </button>
-
-                <button
-                    onclick="login()"
-                    class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                >
-                    Login
-                </button>
+    <!-- ========================================== -->
+    <!-- PAGE 1: DYNAMIC LANDING PAGE               -->
+    <!-- ========================================== -->
+    <div id="landing-section" class="flex-grow flex flex-col bg-white">
+        <!-- Marketplace Navbar -->
+        <nav class="bg-white/80 backdrop-blur-md border-b border-slate-100 py-4 px-8 flex justify-between items-center sticky top-0 z-50">
+            <div onclick="showLandingPage()" class="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity">
+                <span class="text-3xl">🎯</span>
+                <h1 class="text-2xl font-extrabold tracking-tight text-slate-900">Intern<span class="text-blue-600">Track</span></h1>
             </div>
+            
+            <div class="hidden md:flex gap-8 text-sm font-semibold text-slate-600 items-center">
+                <a href="#" class="hover:text-blue-600 transition-colors">Find Jobs</a>
+                <a href="#" class="hover:text-blue-600 transition-colors">Top Companies</a>
+                <div class="w-px h-6 bg-slate-200"></div>
+                <a href="#" class="text-indigo-600 hover:text-indigo-800 transition-colors flex items-center gap-1">For Employers 💼</a>
+            </div>
+            
+            <div id="landing-auth-buttons" class="flex gap-3">
+                <!-- JS injects buttons here -->
+            </div>
+        </nav>
 
-            <p id="auth-message" class="text-red-500 mt-2 text-sm"></p>
+        <!-- 1A: GUEST VIEW (Not Logged In) -->
+        <div id="landing-guest" class="flex-grow flex flex-col">
+            <!-- Dual-Sided Hero -->
+            <main class="px-6 lg:px-12 py-16 lg:py-20 bg-grid relative">
+                <div class="absolute inset-0 bg-gradient-to-b from-white/90 via-white/80 to-slate-50/90 pointer-events-none"></div>
+                
+                <div class="relative z-10 max-w-7xl mx-auto text-center">
+                    <h2 class="text-5xl lg:text-7xl font-extrabold text-slate-900 leading-[1.1] mb-6 tracking-tight">
+                        Where top talent meets <br> <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">world-class companies.</span>
+                    </h2>
+                    <p class="text-lg text-slate-600 mb-12 max-w-2xl mx-auto leading-relaxed">
+                        Whether you are a student tracking applications, or an employer hiring the top 1%, InternTrack is your platform.
+                    </p>
+
+                    <!-- Dual Action Cards -->
+                    <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto text-left">
+                        <!-- Student Card -->
+                        <div class="bg-white p-8 rounded-3xl shadow-xl border border-blue-100 relative overflow-hidden group hover:-translate-y-1 transition-transform">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-full blur-3xl -z-10 group-hover:bg-blue-100 transition-colors"></div>
+                            <div class="text-4xl mb-4">🎓</div>
+                            <h3 class="text-2xl font-bold text-slate-900 mb-2">I'm a Student</h3>
+                            <p class="text-slate-500 mb-6">Build your profile, apply to top jobs, and track your interview pipeline.</p>
+                            <button onclick="showAuthPage()" class="w-full bg-blue-600 text-white font-bold py-3.5 rounded-xl hover:bg-blue-700 transition-colors shadow-md shadow-blue-200">
+                                Student Login / Register
+                            </button>
+                        </div>
+
+                        <!-- Employer Card -->
+                        <div class="bg-white p-8 rounded-3xl shadow-xl border border-indigo-100 relative overflow-hidden group hover:-translate-y-1 transition-transform">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-50 rounded-full blur-3xl -z-10 group-hover:bg-indigo-100 transition-colors"></div>
+                            <div class="text-4xl mb-4">🏢</div>
+                            <h3 class="text-2xl font-bold text-slate-900 mb-2">I'm an Employer</h3>
+                            <p class="text-slate-500 mb-6">Post jobs, review applicant profiles, and hire the next generation of leaders.</p>
+                            <button onclick="alert('Demo Mode: Please use the Student Login.')" class="w-full bg-indigo-600 text-white font-bold py-3.5 rounded-xl hover:bg-indigo-700 transition-colors shadow-md shadow-indigo-200">
+                                Employer Login / Register
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            
+            <!-- Extra Marketing Section (The "Yapping" with Images) -->
+            <section class="bg-slate-900 text-white py-20 px-6">
+                <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <h3 class="text-3xl font-bold mb-6">Stop guessing. Start tracking.</h3>
+                        <p class="text-slate-300 text-lg mb-6 leading-relaxed">
+                            Sending out resumes into the void is a thing of the past. Our platform gives you AI-driven insights into your application success rate, helps you prepare for technical interviews, and connects you directly with university recruiters.
+                        </p>
+                        <ul class="space-y-3 font-semibold text-blue-300">
+                            <li>✓ Track interview stages instantly</li>
+                            <li>✓ Discover salary transparent job posts</li>
+                            <li>✓ Connect with alumni at FAANG</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Team working" class="rounded-2xl shadow-2xl border-4 border-slate-700">
+                    </div>
+                </div>
+            </section>
         </div>
 
-        <!-- DASHBOARD SECTION -->
-        <div id="dashboard-section" class="hidden">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-2xl font-bold">My Applications</h2>
-                <button
-                    onclick="logout()"
-                    class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-                >
-                    Logout
-                </button>
-            </div>
+        <!-- 1B: USER VIEW (Logged In Home / Feed) -->
+        <div id="landing-user" class="hidden flex-grow bg-slate-50 py-12 px-6">
+            <div class="max-w-6xl mx-auto">
+                <div class="mb-10 flex justify-between items-end">
+                    <div>
+                        <h2 class="text-4xl font-extrabold text-slate-900 tracking-tight mb-2">Welcome Back! 🚀</h2>
+                        <p class="text-lg text-slate-600">Here is your daily career inspiration.</p>
+                    </div>
+                    <button onclick="showDashboardPage()" class="bg-blue-600 text-white font-bold px-6 py-3 rounded-xl hover:bg-blue-700 shadow-md transition-all">Go to Dashboard →</button>
+                </div>
 
-            <div id="app-container" class="bg-white p-6 rounded-lg shadow-md">
-                <div class="max-w-md mx-auto space-y-4">
-                    <input
-                        type="text"
-                        id="company_name"
-                        placeholder="Company Name"
-                        class="w-full border p-2 rounded"
-                    >
+                <div class="grid lg:grid-cols-3 gap-8">
+                    <!-- Featured Video Section -->
+                    <div class="lg:col-span-2 bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
+                        <div class="p-6 border-b border-slate-100">
+                            <h3 class="text-xl font-bold text-slate-900">Featured: How to Ace the Tech Interview</h3>
+                        </div>
+                        <!-- Embedded YouTube Video -->
+                        <div class="aspect-w-16 aspect-h-9 w-full">
+                            <iframe class="w-full h-[400px]" src="https://www.youtube.com/embed/HG68Ymazo18" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                    </div>
 
-                    <input
-                        type="text"
-                        id="role_title"
-                        placeholder="Role Title"
-                        class="w-full border p-2 rounded"
-                    >
+                    <!-- Career Articles Feed -->
+                    <div class="space-y-6">
+                        <h3 class="text-xl font-bold text-slate-900 mb-4">Trending Career Advice</h3>
+                        
+                        <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 hover:border-blue-300 transition-colors cursor-pointer flex gap-4 items-center">
+                            <img src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=150&q=80" class="w-20 h-20 rounded-xl object-cover">
+                            <div>
+                                <h4 class="font-bold text-slate-900 leading-tight">How to Negotiate Your First Salary</h4>
+                                <p class="text-xs text-slate-500 mt-1">By Forbes • 5 min read</p>
+                            </div>
+                        </div>
 
-                    <button
-                        onclick="addApplication()"
-                        class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                    >
-                        Save Application
-                    </button>
+                        <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 hover:border-blue-300 transition-colors cursor-pointer flex gap-4 items-center">
+                            <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=150&q=80" class="w-20 h-20 rounded-xl object-cover">
+                            <div>
+                                <h4 class="font-bold text-slate-900 leading-tight">Top 10 Resume Mistakes in 2026</h4>
+                                <p class="text-xs text-slate-500 mt-1">By TechCrunch • 3 min read</p>
+                            </div>
+                        </div>
 
-                    <div id="applications-list" class="space-y-2 mt-6"></div>
+                        <div class="bg-indigo-600 p-6 rounded-2xl text-white shadow-md">
+                            <h4 class="font-bold text-lg mb-2">Upcoming Virtual Career Fair</h4>
+                            <p class="text-indigo-100 text-sm mb-4">Connect with recruiters from top tech companies this Friday.</p>
+                            <button class="bg-white text-indigo-600 font-bold px-4 py-2 rounded-lg text-sm w-full">Register Now</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- ========================================== -->
+    <!-- PAGE 2: AUTHENTICATION PAGE                -->
+    <!-- ========================================== -->
+    <div id="auth-section" class="hidden flex-grow flex items-center justify-center p-6 bg-slate-50 relative">
+        <div class="bg-white rounded-3xl shadow-2xl flex max-w-4xl w-full border border-slate-100 relative z-10 overflow-hidden">
+            <div class="w-1/2 bg-blue-600 p-12 text-white hidden md:flex flex-col justify-between relative">
+                <div class="relative z-10">
+                    <div onclick="showLandingPage()" class="cursor-pointer inline-flex items-center gap-2 mb-12 hover:opacity-80">
+                        <span class="text-2xl">🎯</span>
+                        <h1 class="text-xl font-extrabold tracking-tight">InternTrack</h1>
+                    </div>
+                    <h2 class="text-4xl font-bold mb-4 leading-tight">Student Portal</h2>
+                    <p class="text-blue-100 text-lg">Set up your profile, organize your applications, and crush your interviews.</p>
+                </div>
+            </div>
+            
+            <div class="w-full md:w-1/2 p-10 relative">
+                <button onclick="showLandingPage()" class="absolute top-6 right-6 text-slate-400 hover:text-slate-700 font-bold bg-slate-100 rounded-full w-8 h-8 flex items-center justify-center">✕</button>
+                <h3 class="text-2xl font-bold text-slate-900 mb-2">Student Login</h3>
+                <p class="text-slate-500 mb-6 font-medium">Enter your university email to access your pipeline.</p>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1">Email Address</label>
+                        <input type="email" id="email" placeholder="student@uni.edu" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1">Password</label>
+                        <input type="password" id="password" placeholder="••••••••" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 outline-none">
+                    </div>
+                    <p id="auth-message" class="text-red-500 text-sm font-bold text-center h-4"></p>
+
+                    <button onclick="login()" class="w-full bg-blue-600 text-white font-bold py-3.5 rounded-xl hover:bg-blue-700 shadow-md">Log In</button>
+                    <button onclick="register()" class="w-full bg-white text-blue-600 border border-blue-200 font-bold py-3.5 rounded-xl hover:bg-blue-50">Create Student Account</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- PAGE 3: DASHBOARD (Logged In)              -->
+    <!-- ========================================== -->
+    <div id="dashboard-section" class="hidden flex-grow flex flex-col bg-slate-50">
+        <nav class="bg-white shadow-sm border-b border-slate-200 px-8 py-4 sticky top-0 z-50">
+            <div class="max-w-7xl mx-auto flex justify-between items-center">
+                <div onclick="showLandingPage()" class="flex items-center gap-2 cursor-pointer hover:opacity-80">
+                    <span class="text-2xl">🎯</span>
+                    <h2 class="text-xl font-bold text-slate-900 tracking-tight">Intern<span class="text-blue-600">Track</span></h2>
+                </div>
+                <div class="hidden md:flex gap-6 font-semibold text-slate-600 text-sm">
+                    <a href="#" class="text-blue-600 border-b-2 border-blue-600 pb-1">Your Dashboard</a>
+                    <a href="#" class="hover:text-blue-600">Job Listings (45)</a>
+                    <a href="#" class="hover:text-blue-600">My Profile</a>
+                </div>
+                <div class="flex gap-4 items-center">
+                    <button onclick="logout()" class="text-sm font-bold text-slate-600 hover:text-red-600 bg-slate-100 px-5 py-2.5 rounded-lg transition-all">Sign Out</button>
+                </div>
+            </div>
+        </nav>
+
+        <div class="max-w-7xl mx-auto w-full p-6 lg:p-8 grid lg:grid-cols-4 gap-8">
+            <div class="lg:col-span-1 hidden lg:block">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden sticky top-24">
+                    <div class="h-16 bg-gradient-to-r from-blue-400 to-blue-600"></div>
+                    <div class="p-6 text-center relative">
+                        <div class="w-20 h-20 bg-slate-200 rounded-full border-4 border-white absolute -top-10 left-1/2 transform -translate-x-1/2 flex items-center justify-center text-3xl shadow-sm">👨‍🎓</div>
+                        <h4 class="mt-8 font-bold text-lg text-slate-900">Student Profile</h4>
+                        <p class="text-sm text-slate-500 mb-4">CS Major @ University</p>
+                        <div class="flex justify-between text-sm border-t border-slate-100 pt-3 mt-3">
+                            <span class="text-slate-500">Applications sent</span>
+                            <span class="font-bold text-blue-600">12</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-3">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-8 flex gap-4">
+                    <div class="w-1/3">
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Company</label>
+                        <input type="text" id="company_name" placeholder="e.g. Google" class="w-full p-3 bg-slate-50 border rounded-xl">
+                    </div>
+                    <div class="w-1/3">
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Role Title</label>
+                        <input type="text" id="role_title" placeholder="e.g. Data Analyst" class="w-full p-3 bg-slate-50 border rounded-xl">
+                    </div>
+                    <div class="w-1/3 flex items-end">
+                        <button onclick="addApplication()" class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700">Add to Pipeline</button>
+                    </div>
+                </div>
+
+                <h3 class="text-2xl font-bold text-slate-900 mb-4">My Application Pipeline</h3>
+                <div id="applications-list" class="space-y-4"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script -->
     <script src="app.js"></script>
 </body>
 </html>
